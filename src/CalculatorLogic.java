@@ -1,3 +1,68 @@
 public class CalculatorLogic {
-    
+    public String evaluate(String expression){
+        try{
+            double result = eval(expression);
+            return String.valueOf(result);
+        } catch (Exception e){
+            return "Error";
+        }
+    }
+
+    //Simple parser
+    private double eval(String expr){
+        return new Object() {
+            int pos = -1, ch;
+            void nextChar(){
+                ch = (++pos < expr.length()) ? expr.charAt(pos) : -1;
+            }
+
+            boolean eat(int charToEat){
+                while(ch == ' ') nextChar();
+                if(ch == charToEat){
+                    nextChar();
+                    return true;
+                }
+                return false;
+            }
+            double parse(){
+                nextChar();
+                double x = parseExpression();
+                if(pos < expr.length()) throw new RuntimeException("Unexpected: " + (char)ch);
+                return x;
+            }
+            double parseExpression(){
+                double x = parseTerm();
+                while(true) {
+                    if (eat('+')) x += parseTerm(); // addition
+                    else if (eat('-')) x -= parseTerm(); // subtraction
+                    else return x;
+                }
+            }
+
+            double parseTerm(){
+                double x = parseFactor();
+                while(true) {
+                    if (eat('*')) x *= parseFactor(); // multiplication
+                    else if (eat('/')) x /= parseFactor(); // division
+                    else return x;
+                }
+            }
+            double parseFactor() {
+                if (eat('+')) return parseFactor(); // unary plus
+                if (eat('-')) return -parseFactor(); // unary minus
+
+                double x;
+                int startPos = this.pos;
+
+                if ((ch >= '0' && ch <= '9') || ch == '.') {
+                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
+                    x = Double.parseDouble(expr.substring(startPos, this.pos));
+                } else {
+                    throw new RuntimeException("Unexpected: " + (char)ch);
+                }
+
+                return x;
+            }
+        }.parse();
+    }
 }
