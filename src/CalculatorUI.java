@@ -7,6 +7,12 @@ import javax.swing.border.Border;
 public class CalculatorUI extends Frame implements ActionListener {
     TextField display;
     StringBuilder currentInput = new StringBuilder();
+    String[] buttons = {
+            "7", "8", "9", "/",
+            "4", "5", "6", "*",
+            "1", "2", "3", "-",
+            "C", "0", "=", "+"
+        };
     CalculatorLogic logic = new CalculatorLogic();
     public CalculatorUI(){
         setTitle("Calculator");
@@ -23,14 +29,9 @@ public class CalculatorUI extends Frame implements ActionListener {
         //Buttons
         Panel panel = new Panel();
         panel.setLayout(new GridLayout(4,4));
-        String[] buttons = {
-            "7", "8", "9", "/",
-            "4", "5", "6", "*",
-            "1", "2", "3", "-",
-            "C", "0", "=", "+"
-        };
+        
         for(String label: buttons){
-            Button b = new Button();
+            Button b = new Button(label);
             b.setFont(new Font("Arial", Font.PLAIN, 20));
             b.addActionListener(this);
             panel.add(b);
