@@ -138,8 +138,6 @@ If you like this project, feel free to star the repo and connect with me on Link
 ---
 
 ## 🏗️ Future Improvements
-
-- [ ] Scientific functions (sin, cos, log)
 - [ ] Keyboard input support
 - [ ] Theme toggle (dark/light mode)
 - [ ] History log of operations
