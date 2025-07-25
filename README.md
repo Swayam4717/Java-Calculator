@@ -31,7 +31,7 @@ A simple graphical calculator built using Java AWT. This project showcases funda
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/Java-Calculator.git
+   git clone https://github.com/Swayam4717/Java-Calculator.git
    cd Java-Calculator
    ```
 
