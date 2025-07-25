@@ -1,1 +1,1 @@
-java -cp out CalculatorApp
+java -cp out app.CalculatorApp

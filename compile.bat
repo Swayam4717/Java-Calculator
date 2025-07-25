@@ -1,1 +1,1 @@
-javac -d out src\*.java
+javac -d out -sourcepath src src/app/CalculatorApp.java
