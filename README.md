@@ -48,7 +48,11 @@ CalculatorProject/
 - Java Development Kit (JDK) 8 or higher installed
 - `JAVA_HOME` properly set in environment variables
 
-### 🧱 Compile
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Swayam4717/Java-Calculator.git
+   cd Java-Calculator
+   ```
 
 Double-click or run in terminal:
 
