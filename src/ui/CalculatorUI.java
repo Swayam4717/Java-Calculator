@@ -1,63 +1,62 @@
 package ui;
 
-import logic.CalculatorLogic;
-import logic.StandardCalculatorLogic;
-import logic.ScientificCalculatorLogic;
-
+import logic.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class CalculatorUI extends JFrame {
-    private final JTextField display;
+    private JTextField display;
+    private JButton switchModeButton;
+    private boolean isScientific = false;
     private CalculatorLogic logic;
     private JPanel buttonPanel;
 
     public CalculatorUI() {
-        super("Calculator");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400, 500);
-        setLocationRelativeTo(null);
+        setTitle("Calculator");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setResizable(false);
 
-        // Set initial logic to Standard
         logic = new StandardCalculatorLogic();
 
-        // Display
+        // Display setup
         display = new JTextField();
         display.setEditable(false);
         display.setFont(new Font("Arial", Font.PLAIN, 24));
+        add(display, BorderLayout.NORTH);
 
-        // Top panel with ModeSwitcher on right
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.add(display, BorderLayout.CENTER);
-        topPanel.add(new ModeSwitcher(this), BorderLayout.EAST);
-        add(topPanel, BorderLayout.NORTH);
-
-        // Button panel area
-        buttonPanel = new JPanel(new BorderLayout());
-        buttonPanel.add(new ButtonLayout(this, isScientificMode()), BorderLayout.CENTER);
+        // Button layout panel (center)
+        buttonPanel = new ButtonLayout(this, isScientific);
         add(buttonPanel, BorderLayout.CENTER);
 
+        // Switch Mode Button
+        switchModeButton = new JButton("Switch Mode");
+        switchModeButton.setPreferredSize(new Dimension(100, 40)); // smaller
+        switchModeButton.addActionListener(e -> toggleMode());
+        add(switchModeButton, BorderLayout.SOUTH);
+
+        setSize(400, 500);
         setVisible(true);
     }
 
-    public void appendToDisplay(String text) {
-        display.setText(display.getText() + text);
+    private void toggleMode() {
+        isScientific = !isScientific;
+        logic = isScientific ? new ScientificCalculatorLogic() : new StandardCalculatorLogic();
+
+        // Refresh button layout
+        remove(buttonPanel);
+        buttonPanel = new ButtonLayout(this, isScientific);
+        add(buttonPanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 
-    public void clearDisplay() {
-        display.setText("");
+    public String getDisplayText() {
+        return display.getText();
     }
 
-    public void calculateResult() {
-        String expression = display.getText();
-        String result = logic.evaluate(expression);
-        display.setText(result);
-    }
-
-    public void setLogic(CalculatorLogic logic) {
-        this.logic = logic;
+    public void setDisplayText(String text) {
+        display.setText(text);
     }
 
     public CalculatorLogic getCurrentLogic() {
@@ -65,14 +64,6 @@ public class CalculatorUI extends JFrame {
     }
 
     public boolean isScientificMode() {
-        return logic instanceof ScientificCalculatorLogic;
-    }
-
-    public void refreshButtons() {
-        buttonPanel.removeAll();
-        ButtonLayout layout = new ButtonLayout(this, isScientificMode());
-        buttonPanel.add(layout, BorderLayout.CENTER);
-        buttonPanel.revalidate();
-        buttonPanel.repaint();
+        return isScientific;
     }
 }
